@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Responses from "./Responses";
 import { Configuration, OpenAIApi } from "openai";
 import dotenv from "dotenv";
+import { prompts } from "./Prompts";
 
 const Search = () => {
   const [inputValue, setInputValue] = useState("");
@@ -46,14 +47,30 @@ const Search = () => {
     setInputValue("");
   };
 
+  const getRandomIndex = (length: number) => {
+    return Math.floor(Math.random() * length);
+  }
+
+  const generateRandomPrompt = async() => {
+    try{
+      const randomIndex : number = getRandomIndex(prompts.length);
+      const randomPrompt : string = prompts[randomIndex];
+      console.log(randomPrompt);
+      setInputValue(randomPrompt);
+    }
+    catch(error){
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="w-4/5 flex flex-row mx-auto pt-2 mt-24">
         <span className="text-md md:text-lg text-primary font-medium font-bodyFont">
           Start with a detailed description
         </span>
-        <button className="border ml-3 p-1 mb-5 px-2 rounded-lg text-sm border-primary text-primary bg-tertiary font-bold focus:outline-none hover:bg-secondary">
-          Suprise me
+        <button onClick={generateRandomPrompt} className="border ml-3 p-1 mb-5 px-2 rounded-lg text-sm border-primary text-primary bg-tertiary font-bold focus:outline-none hover:bg-secondary">
+          Surprise me
         </button>
       </div>
       <form onSubmit={generateImage}>
